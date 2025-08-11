@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"github.com/captainmio/go-crud-post/initializers"
+)
+
+func init() {
+	initializers.LoadEnvironmentVariables()
+	initializers.ConnectToDatabase()
+}
 
 func main() {
-	fmt.Println("Hello, World! - rustum")
+	initializers.Routes()
 }
