@@ -2,7 +2,9 @@ package initializers
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/captainmio/go-crud-post/controllers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,10 +12,12 @@ func Routes() {
 	fmt.Println("Setting up routes...")
 	router := gin.Default()
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong test here",
-		})
-	})
-	router.Run() // listen and serve on 0.0.0.0:8080
+	// Posts routes
+	router.POST("/posts", controllers.CreatePost)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	router.Run(":" + port)
 }

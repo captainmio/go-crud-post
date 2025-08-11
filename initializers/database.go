@@ -3,6 +3,7 @@ package initializers
 import (
 	"os"
 
+	"github.com/captainmio/go-crud-post/db"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -14,7 +15,7 @@ func ConnectToDatabase() {
 	var err error
 	dsn := os.Getenv("DSN")
 
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect to database")
