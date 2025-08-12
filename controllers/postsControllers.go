@@ -122,3 +122,36 @@ func UpdatePost(c *gin.Context) {
 		"data":    post,
 	})
 }
+
+func DeletePost(c *gin.Context) {
+	// get id param
+	id := c.Param("id")
+	var post models.Post
+
+	// find post by id
+	result := db.DB.First(&post, id)
+
+	if result.Error != nil {
+		c.JSON(404, gin.H{
+			"success": false,
+			"message": "Post not found",
+		})
+		return
+	}
+
+	// delete post
+	result = db.DB.Delete(&post)
+
+	if result.Error != nil {
+		c.JSON(400, gin.H{
+			"success": false,
+			"message": "Failed to delete post",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"success": true,
+		"message": "Post deleted successfully",
+	})
+}

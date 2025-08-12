@@ -17,6 +17,7 @@ func Routes() {
 	router.GET("/posts", controllers.GetPosts)
 	router.GET("/posts/:id", controllers.GetPostByID)
 	router.PUT("/posts/:id", controllers.UpdatePost)
+	router.DELETE("/posts/:id", controllers.DeletePost)
 
 	port := os.Getenv("PORT")
 	if port == "" {
