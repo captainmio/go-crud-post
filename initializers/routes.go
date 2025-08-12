@@ -14,6 +14,7 @@ func Routes() {
 
 	// Posts routes
 	router.POST("/posts", controllers.CreatePost)
+	router.GET("/posts", controllers.GetPosts)
 
 	port := os.Getenv("PORT")
 	if port == "" {

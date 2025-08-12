@@ -1,17 +1,23 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/captainmio/go-crud-post/db"
 	"github.com/captainmio/go-crud-post/models"
 	"github.com/gin-gonic/gin"
 )
 
 func CreatePost(c *gin.Context) {
-	fmt.Println("Creating a new post...")
+	var body struct {
+		Title   string `json:"title"`
+		Content string `json:"content"`
+	}
 
-	post := models.Post{Title: "Test 111", Content: "This is a test post."}
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	post := models.Post{Title: body.Title, Content: body.Content}
 
 	result := db.DB.Create(&post)
 
@@ -25,5 +31,24 @@ func CreatePost(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"success": true,
 		"data":    post,
+	})
+}
+
+func GetPosts(c *gin.Context) {
+	var posts []models.Post
+
+	result := db.DB.Find(&posts)
+
+	if result.Error != nil {
+		c.JSON(400, gin.H{
+			"success": false,
+			"message": "Failed to retrieve posts",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"success": true,
+		"data":    posts,
 	})
 }
